@@ -38,8 +38,8 @@ A lightweight, standalone web-based attendance system for the DLSU-D Council of 
 ### Step 1: Clone or Download the Repository
 
 ```bash
-git clone https://github.com/mightbeian/dlsu-cso-attendance.git
-cd dlsu-cso-attendance
+git clone https://github.com/mightbeian/dlsud-cso-attendance.git
+cd dlsud-cso-attendance
 ```
 
 ### Step 2: Install Dependencies
