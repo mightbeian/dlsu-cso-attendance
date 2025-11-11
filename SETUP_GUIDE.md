@@ -77,15 +77,15 @@ If both commands work, Python is installed correctly!
 
 **Option A: Using Git (if installed)**
 ```bash
-git clone https://github.com/mightbeian/dlsu-cso-attendance.git
-cd dlsu-cso-attendance
+git clone https://github.com/mightbeian/dlsud-cso-attendance.git
+cd dlsud-cso-attendance
 ```
 
 **Option B: Download ZIP**
-1. Go to: https://github.com/mightbeian/dlsu-cso-attendance
+1. Go to: https://github.com/mightbeian/dlsud-cso-attendance
 2. Click green **"Code"** button
 3. Click **"Download ZIP"**
-4. Extract ZIP to desired location (e.g., `C:\dlsu-cso-attendance`)
+4. Extract ZIP to desired location (e.g., `C:\dlsud-cso-attendance`)
 
 ### Step 2: Open Command Prompt in Project Folder
 
@@ -97,7 +97,7 @@ cd dlsu-cso-attendance
 
 **Method 2: Using cd command**
 1. Open Command Prompt
-2. Type: `cd C:\path\to\dlsu-cso-attendance`
+2. Type: `cd C:\path\to\dlsud-cso-attendance`
 3. Press Enter
 
 ### Step 3: Install Dependencies
@@ -167,7 +167,7 @@ Choose one of these methods to make the application start automatically when the
 1. Open `start_attendance.bat` with Notepad
 2. Make sure the path is correct:
    ```batch
-   cd /d "C:\your\actual\path\to\dlsu-cso-attendance"
+   cd /d "C:\your\actual\path\to\dlsud-cso-attendance"
    ```
 3. Save if you made changes
 
@@ -242,7 +242,7 @@ Choose one of these methods to make the application start automatically when the
 3. **Start in:**
    - Click **"Browse"**
    - Navigate to project folder
-   - Or paste path: `C:\dlsu-cso-attendance`
+   - Or paste path: `C:\dlsud-cso-attendance`
 
 4. Click **"Next"**, then **"Finish"**
 
@@ -345,27 +345,11 @@ Successfully added: 2 user(s)
 
 #### Automated Backup Script
 
-1. Create `backup_database.bat`:
+The project includes `backup_database.bat` for automated backups:
 
-```batch
-@echo off
-REM Attendance Database Backup Script
-
-set PROJECT_PATH=C:\dlsu-cso-attendance
-set BACKUP_PATH=C:\Backups\Attendance
-set DATE=%date:~10,4%%date:~4,2%%date:~7,2%
-
-REM Create backup directory if it doesn't exist
-if not exist "%BACKUP_PATH%" mkdir "%BACKUP_PATH%"
-
-REM Copy database
-copy "%PROJECT_PATH%\attendance.db" "%BACKUP_PATH%\attendance_%DATE%.db"
-
-echo Backup completed: attendance_%DATE%.db
-```
-
-2. Save in project folder
-3. Set up in Task Scheduler to run daily
+1. Double-click `backup_database.bat` to create a backup
+2. Backups are saved in `backups/` folder with timestamp
+3. Set up in Task Scheduler to run daily (optional)
 
 ### Cleaning Old Exports
 
@@ -453,7 +437,7 @@ When troubleshooting, share the error messages from Command Prompt.
 
 ### Contact Support
 
-- **GitHub Issues:** https://github.com/mightbeian/dlsu-cso-attendance/issues
+- **GitHub Issues:** https://github.com/mightbeian/dlsud-cso-attendance/issues
 - **Email:** cabrera.cpaul@gmail.com
 
 When reporting issues, include:
@@ -477,4 +461,4 @@ After setup:
 
 ---
 
-**Need more help? Visit: https://github.com/mightbeian/dlsu-cso-attendance**
+**Need more help? Visit: https://github.com/mightbeian/dlsud-cso-attendance**
