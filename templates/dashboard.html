@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLSU-D CSO Attendance Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="logo">DLSU-D CSO</div>
+            <h1>Attendance System</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search users..." autocomplete="off">
+                <div id="searchResults" class="search-results hidden"></div>
+            </div>
+            <button id="adminBtn" class="admin-btn">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Active Users</h2>
+                <span id="activeCount" class="badge">0</span>
+            </div>
+            
+            <div id="activeUsersContainer" class="active-users-list">
+                {% for committee in committees %}
+                <div class="committee-section">
+                    <div class="committee-header">
+                        <h3>{{ committee }}</h3>
+                        <span class="committee-count" data-committee="{{ committee }}">0</span>
+                    </div>
+                    <div class="committee-users" id="committee-{{ committee|replace(' ', '-')|lower }}">
+                        <p class="no-users">No active users</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- User Photo Display -->
+            <div id="userPhotoContainer" class="user-photo-container hidden">
+                <img id="userPhoto" src="" alt="User Photo">
+                <div class="photo-placeholder">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+
+            <!-- Attendance Input Section -->
+            <div class="attendance-section">
+                <div class="input-group">
+                    <label for="idNumber">ID Number</label>
+                    <input 
+                        type="text" 
+                        id="idNumber" 
+                        placeholder="Enter ID Number and press Enter" 
+                        maxlength="20"
+                        autocomplete="off"
+                        autofocus
+                    >
+                </div>
+
+                <!-- Message Area -->
+                <div id="messageArea" class="message-area hidden">
+                    <p id="messageText"></p>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <div class="stat-info">
+                        <h3 id="loggedInToday">0</h3>
+                        <p>Logged In Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <h3 id="currentTime">--:--</h3>
+                        <p>Current Time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="export">Export DTR</button>
+                    <button class="tab-btn" data-tab="add-user">Add User</button>
+                    <button class="tab-btn" data-tab="manage-users">Manage Users</button>
+                </div>
+
+                <!-- Export Tab -->
+                <div id="export-tab" class="tab-content active">
+                    <button id="exportBtn" class="primary-btn">
+                        <i class="fas fa-file-excel"></i> Export DTR to Excel
+                    </button>
+                    <p class="tab-description">Download attendance records in Excel format</p>
+                </div>
+
+                <!-- Add User Tab -->
+                <div id="add-user-tab" class="tab-content">
+                    <form id="addUserForm">
+                        <div class="form-group">
+                            <label for="newIdNumber">ID Number *</label>
+                            <input type="text" id="newIdNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newFullName">Full Name *</label>
+                            <input type="text" id="newFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newBirthday">Birthday (MM-DD) *</label>
+                            <input type="text" id="newBirthday" placeholder="01-15" pattern="\d{2}-\d{2}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newCommittee">Committee *</label>
+                            <select id="newCommittee" required>
+                                <option value="">Select Committee</option>
+                                {% for committee in committees %}
+                                <option value="{{ committee }}">{{ committee }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPhoto">Photo (optional)</label>
+                            <input type="file" id="newPhoto" accept="image/*">
+                            <small>Max 5MB. Formats: JPG, PNG, GIF</small>
+                        </div>
+                        <button type="submit" class="primary-btn">
+                            <i class="fas fa-user-plus"></i> Add User
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Manage Users Tab -->
+                <div id="manage-users-tab" class="tab-content">
+                    <div class="search-box">
+                        <input type="text" id="manageSearchInput" placeholder="Search users to manage...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div id="usersList" class="users-list">
+                        <p class="loading">Loading users...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
